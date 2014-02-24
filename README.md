@@ -32,3 +32,7 @@ jetty::jetty_properties:
     JETTY_HOST: 0.0.0.0
     JETTY_LOGS: /var/log/jetty
 ```
+
+## License
+
+MIT
