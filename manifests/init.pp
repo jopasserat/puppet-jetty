@@ -24,7 +24,7 @@ class jetty(
     ensure => "present",
     groups => $group,
     managehome => true,
-    shell  => '/sbin/nologin',
+    shell  => '/bin/bash',
     require => Group["${group}"],
   }
 
