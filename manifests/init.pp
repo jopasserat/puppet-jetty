@@ -8,6 +8,7 @@ class jetty(
   $tmp                    = hiera('jetty::tmp', '/tmp'),
   $java_properties        = hiera('jetty::java_properties', undef),
   $jetty_properties       = hiera('jetty::jetty_properties', undef),
+  $create_work_dir        = hiera('jetty::create_work_dir', false),
   $remove_demo_base       = hiera('jetty::remove_demo_base', true),
 ) {
 
@@ -76,6 +77,17 @@ class jetty(
     ensure => running,
     hasrestart => true,
     hasstatus => false,
+  }
+
+  if ($create_work_dir) {
+    file { "${home}/work":
+      path => "${home}/work",
+      ensure => directory,
+      owner => $user,
+      group => $group,
+      recurse => true,
+      require => [User["${user}"], File["${home}"]],
+    }
   }
 
   if ($remove_demo_base) {
