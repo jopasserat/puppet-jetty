@@ -1,0 +1,11 @@
+name         'gsick-jetty'
+version      '0.0.1'
+source       'git://github.com/gsick/puppet-jetty.git'
+author       'Gamaliel Sick <eivindm@conduct.no>'
+license      'MIT'
+summary      'Jetty configuration module'
+description  'Puppet module for installing Jetty'
+project_page 'https://github.com/gsick/puppet-jetty.git'
+
+dependency   'puppetlabs/stdlib', '>= 4.1.0'
+dependency   'puppetlabs/java', '>= 1.0.1'
