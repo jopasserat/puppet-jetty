@@ -80,23 +80,33 @@ class jetty(
 
   if ($java_properties != '' or $jetty_properties != '') {
 
-    $content = ""
+    file { "/etc/default/jetty":
+      path => "/etc/default/jetty",
+      ensure => present,
+    }
 
     if ($java_properties != '') {
       $java_properties.each |$key, $value| {
-        $content << "${key}=${value}\n"
+        file_line { "java_properties_${key}":
+          path => "/etc/default/jetty",
+          line => "${key}=${value}",
+          match => "^(${key}=).*$",
+          require => File["/etc/default/jetty"],
+          notify => Service['jetty'],
+        }
       }
     }
 
     if ($jetty_properties != '') {
       $jetty_properties.each |$key, $value| {
-        $content << "${key}=${value}\n"
+        file_line { "jetty_properties_${key}":
+          path => "/etc/default/jetty",
+          line => "${key}=${value}",
+          match => "^(${key}=).*$",
+          require => File["/etc/default/jetty"],
+          notify => Service['jetty'],
+        }
       }
-    }
-
-    file { '/etc/default/jetty':
-      content => $content,
-      notify => Service['jetty'],
     }
   }
 }
