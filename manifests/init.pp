@@ -46,7 +46,6 @@ class jetty(
     ensure => directory,
     owner => $user,
     group => $group,
-    mode => 755,
     recurse => true,
     require => [User["${user}"], Exec['unzip jetty']],
   }
