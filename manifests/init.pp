@@ -37,7 +37,7 @@ class jetty(
 
   exec { "unzip jetty":
     cwd => $tmp,
-    command => "/usr/bin/unzip jetty-distribution-${version}.zip /opt/jetty-distribution-${version}",
+    command => "/usr/bin/unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
   }
 
