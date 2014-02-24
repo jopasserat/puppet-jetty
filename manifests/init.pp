@@ -82,6 +82,7 @@ class jetty(
   if ($remove_demo_base) {
     file { "${home}/demo-base":
       ensure => absent,
+      force => true,
       require => File["${home}"],
     }
   }
