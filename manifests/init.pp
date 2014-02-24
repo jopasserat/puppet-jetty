@@ -8,6 +8,7 @@ class jetty(
   $tmp                    = hiera('jetty::tmp', '/tmp'),
   $java_properties        = hiera('jetty::java_properties', undef),
   $jetty_properties       = hiera('jetty::jetty_properties', undef),
+  $remove_demo_base       = hiera('jetty::remove_demo_base', true),
 ) {
 
   include java
@@ -76,6 +77,13 @@ class jetty(
     ensure => running,
     hasrestart => true,
     hasstatus => false,
+  }
+
+  if ($remove_demo_base) {
+    file { "${home}/demo-base":
+      ensure => absent,
+      require => File["${home}"],
+    }
   }
 
   if ($java_properties != '' or $jetty_properties != '') {
