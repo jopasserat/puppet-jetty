@@ -3,10 +3,14 @@ puppet-jetty
 
 Puppet module for installing Jetty
 
-## Prerequisites
+## Dependencies
 
-Use `each` function need `parser = future` in `puppet.conf`.
+This module requires Puppet >= 2.7.14 due to `each` function, need `parser = future` in `puppet.conf`.
 See http://docs.puppetlabs.com/references/latest/function.html#each
+
+This module depends on `hiera` which is introduced in Puppet 3.0.
+This module depends on `puppetlabs/java` 
+This module depends on `pdxcat/singleton`
 
 ## Usage
 In your hieradata file...
