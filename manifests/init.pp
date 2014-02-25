@@ -1,4 +1,40 @@
-
+# = Class: jetty
+#
+# This class installs and configure Jetty Web server.
+#
+# == Parameters:
+#
+# $version:: The version of Jetty to download.
+#
+# $group::  Group who own Jetty.
+#
+# $user::  User who own Jetty.
+#
+# $home::  Jetty home path.
+#
+# $log::  Jetty log path.
+#
+# $tmp::  Temp directory.
+#
+# $java_properties::  Java properties for the jvm.
+#
+# $jetty_properties::  Jetty properties.
+#
+# $create_work_dir::  If create 'work' directory.
+#
+# $remove_demo_base::  If remove 'demo-base' directory.
+#
+# == Requires:
+#
+# Nothing.
+#
+# == Sample Usage:
+#
+#   class {'jetty::deploy':
+#     source => /tmp/myapp.war,
+#     war => app.war,
+#   }
+#
 class jetty(
   $version                = hiera('jetty::version'),
   $group                  = hiera('jetty::group', 'jetty'),
