@@ -83,7 +83,6 @@ class jetty(
       ensure => directory,
       owner => $user,
       group => $group,
-      recurse => true,
       require => [User["${user}"], File["${home}"]],
     }
   }
