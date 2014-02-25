@@ -9,3 +9,4 @@ project_page 'https://github.com/gsick/puppet-jetty'
 
 dependency   'puppetlabs/stdlib', '>= 4.1.0'
 dependency   'puppetlabs/java', '>= 1.0.1'
+dependency   'pdxcat/singleton', '>= 0.0.4'

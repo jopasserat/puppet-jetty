@@ -12,11 +12,9 @@ class jetty(
   $remove_demo_base       = hiera('jetty::remove_demo_base', true),
 ) {
 
-  include java
+  require java
 
-  package { ["unzip", "wget"]:
-    ensure => present,
-  }
+  singleton_packages("unzip", "wget")
 
   group { "${group}":
     ensure => "present",
