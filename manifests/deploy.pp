@@ -24,8 +24,6 @@ class jetty::deploy (
   $war          = hiera('jetty::deploy::war', undef),
 ) {
 
-  require jetty
-
   file { "${jetty::home}/webapps/${war}":
     ensure => present,
     owner  => "${jetty::user}",
