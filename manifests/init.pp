@@ -26,13 +26,12 @@
 #
 # == Requires:
 #
-# Nothing.
+# Java
 #
 # == Sample Usage:
 #
-#   class {'jetty::deploy':
-#     source => /tmp/myapp.war,
-#     war => app.war,
+#   class {'jetty':
+#     version => 9.1.2.v20140210,
 #   }
 #
 class jetty(

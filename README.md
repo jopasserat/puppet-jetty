@@ -35,6 +35,8 @@ jetty::jetty_properties:
     JETTY_PORT: 8080
     JETTY_HOST: 0.0.0.0
     JETTY_LOGS: /var/log/jetty
+jetty::create_work_dir: true
+jetty::remove_demo_base: true
 ```
 
 ## License

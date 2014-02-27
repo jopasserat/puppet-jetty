@@ -10,7 +10,7 @@
 #
 # == Requires:
 #
-# Nothing.
+# Jetty
 #
 # == Sample Usage:
 #
@@ -23,6 +23,8 @@ class jetty::deploy (
   $source       = hiera('jetty::deploy::source', undef),
   $war          = hiera('jetty::deploy::war', undef),
 ) {
+
+  require jetty
 
   file { "${jetty::home}/webapps/${war}":
     ensure => present,
