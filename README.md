@@ -9,7 +9,9 @@ This module requires Puppet >= 2.7.14 due to `each` function, need `parser = fut
 See http://docs.puppetlabs.com/references/latest/function.html#each
 
 This module depends on `hiera` which is introduced in Puppet 3.0.
+
 This module depends on `puppetlabs/java` 
+
 This module depends on `pdxcat/singleton`
 
 ## Usage
@@ -38,6 +40,15 @@ jetty::jetty_properties:
 jetty::create_work_dir: true
 jetty::remove_demo_base: true
 ```
+
+More usage:
+```puppet
+class {'jetty::deploy':
+  source => /tmp/myapp.war,
+  war => app.war,
+}
+```
+
 
 ## License
 
