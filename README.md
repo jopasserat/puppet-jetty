@@ -6,7 +6,6 @@ Puppet module for installing Jetty
 ## Dependencies
 
 This module requires Puppet >= 3.0.0 due to [each](http://docs.puppetlabs.com/references/latest/function.html#each) function, need `parser = future` in `puppet.conf`.<br />
-Available on puppet forge [puppet-jetty](http://forge.puppetlabs.com/gsick/jetty)
 
 ## Usage
 In your hieradata file...
