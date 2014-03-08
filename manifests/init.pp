@@ -64,14 +64,14 @@ class jetty(
   }
 
   exec { "download jetty":
-    cwd => $tmp,
+    cwd => "${tmp}",
     command => "/usr/bin/wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
     creates => "${tmp}/jetty-distribution-${version}.zip",
     notify => Exec['unzip jetty'],
   }
 
   exec { "unzip jetty":
-    cwd => $tmp,
+    cwd => "${tmp}",
     command => "/usr/bin/unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
   }

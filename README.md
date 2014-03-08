@@ -5,8 +5,7 @@ Puppet module for installing Jetty
 
 ## Dependencies
 
-This module requires Puppet >= 3.0.0 due to `each` function, need `parser = future` in `puppet.conf`.
-See http://docs.puppetlabs.com/references/latest/function.html#each
+This module requires Puppet >= 3.0.0 due to [each](http://docs.puppetlabs.com/references/latest/function.html#each) function, need `parser = future` in `puppet.conf`.
 
 ## Usage
 In your hieradata file...
@@ -28,14 +27,14 @@ jetty::log: /var/log/jetty
 jetty::create_work_dir: true
 jetty::remove_demo_base: true
 
-# Add in /etc/default/jetty
+# Added in /etc/default/jetty
 jetty::java_properties:
     JAVA_HOME: /etc/alternatives/jre
     JAVA: /etc/alternatives/jre/bin/java
     JAVA_OPTIONS: "\"-server -XX:MaxPermSize=256m -Xms256m -Xmx2048m\""
     ...
 
-# Add in /etc/default/jetty
+# Added in /etc/default/jetty
 jetty::jetty_properties:
     JETTY_HOME: /opt/jetty
     JETTY_USER: jetty 
