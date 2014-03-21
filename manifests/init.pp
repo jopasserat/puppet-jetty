@@ -68,12 +68,14 @@ class jetty(
     command => "/usr/bin/wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
     creates => "${tmp}/jetty-distribution-${version}.zip",
     notify => Exec['unzip jetty'],
+    require => Package['wget'],
   }
 
   exec { "unzip jetty":
     cwd => "${tmp}",
     command => "/usr/bin/unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
+    require => Package['unzip'],
   }
 
   file { "/opt/jetty-distribution-${version}":
