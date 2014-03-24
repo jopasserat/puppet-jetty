@@ -40,7 +40,7 @@
 #
 # == Copyright
 #
-# Copyright 2013 Gamaliel Sick, unless otherwise noted.
+# Copyright 2014 Gamaliel Sick, unless otherwise noted.
 #
 class jetty(
   $version                = hiera('jetty::version'),
@@ -93,9 +93,10 @@ class jetty(
     require => Package['wget'],
   }
 
-  exec { "unzip jetty":
+  exec { 'unzip jetty':
     cwd     => "${tmp}",
-    command => "/usr/bin/unzip jetty-distribution-${version}.zip -d /opt",
+    path    => '/bin:/usr/bin',
+    command => "unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
     require => Package['unzip'],
   }
@@ -111,16 +112,16 @@ class jetty(
 
   file { 'jetty home':
     path    => "${home}",
-    require => File['jetty directory'],
     ensure  => 'link',
     target  => "/opt/jetty-distribution-${version}",
+    require => File['jetty directory'],
   }
 
   file { 'jetty init':
     path    => '/etc/init.d/jetty',
-    require => File['jetty home'],
     ensure  => 'link',
     target  => "${home}/bin/jetty.sh",
+    require => File['jetty home'],
   }
 
   file { 'jetty log':
@@ -132,7 +133,7 @@ class jetty(
     require => User['jetty user'],
   }
 
-  service { 'jetty service':
+  service { 'jetty':
     name       => 'jetty',
     enable     => true,
     ensure     => running,
@@ -161,8 +162,10 @@ class jetty(
   }
 
   file { 'jetty default':
-    path   => "/etc/default/jetty",
+    path   => '/etc/default/jetty',
     ensure => present,
+    owner  => 'root',
+    group  => 'root',
   }
 
   $final_jetty_properties.each |$key, $value| {
@@ -171,7 +174,7 @@ class jetty(
       line    => "${key}=${value}",
       match   => "^(${key}=).*$",
       require => File['jetty default'],
-      notify  => Service['jetty service'],
+      notify  => Service['jetty'],
     }
   }
       
@@ -184,7 +187,7 @@ class jetty(
         line    => "${key}=${value}",
         match   => "^(${key}=).*$",
         require => File['jetty default'],
-        notify  => Service['jetty service'],
+        notify  => Service['jetty'],
       }
     }
   }

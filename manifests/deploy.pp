@@ -19,12 +19,21 @@
 #     war => app.war,
 #   }
 #
+# == Authors
+#
+# Gamaliel Sick
+#
+# == Copyright
+#
+# Copyright 2014 Gamaliel Sick, unless otherwise noted.
+#
 class jetty::deploy (
   $source       = hiera('jetty::deploy::source', undef),
   $war          = hiera('jetty::deploy::war', undef),
 ) {
 
-  file { "${jetty::home}/webapps/${war}":
+  file { "jetty_war_${war}":
+    path   => "${jetty::home}/webapps/${war}",
     ensure => present,
     owner  => "${jetty::user}",
     group  => "${jetty::group}",

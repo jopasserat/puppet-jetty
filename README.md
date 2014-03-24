@@ -34,13 +34,13 @@ JETTY_LOGS=/var/log/jetty
 
 ## Parameters
 
-*`jetty::version`: version of Jetty
-*`jetty::group`: group running Jetty, default `jetty`
-*`jetty::user`: user running Jetty, default `jetty`
-*`jetty::home`: Jetty home directory, default `/opt/jetty`
-*`jetty::log`: Jetty log directory, default `/var/log/jetty`
-*`jetty::create_work_dir`: If `work` directory must be created, default `false`
-*`jetty::remove_demo_base`: If the demo app must be removed, default `true`
+  * `jetty::version`: version of Jetty (required)
+  * `jetty::group`: group running Jetty, default `jetty`
+  * `jetty::user`: user running Jetty, default `jetty`
+  * `jetty::home`: Jetty home directory, default `/opt/jetty`
+  * `jetty::log`: Jetty log directory, default `/var/log/jetty`
+  * `jetty::create_work_dir`: If `work` directory must be created, default `false`
+  * `jetty::remove_demo_base`: If the demo app must be removed, default `true`
 
 Values of `jetty::user`, `jetty::home` and `jetty::log` are automatically add to `/etc/default/jetty`
 
@@ -73,6 +73,16 @@ jetty::java_properties:
 ```
 
 ### Deploy war
+
+in your hieradata file
+
+```yaml
+---
+jetty::deploy::source: /tmp/myapp.war
+jetty::deploy::war: app.war
+```
+
+or basic puppet usage
 
 ```puppet
 class {'jetty::deploy':
