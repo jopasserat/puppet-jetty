@@ -31,7 +31,7 @@ describe 'jetty' do
       should contain_exec('download jetty').with({
         'cwd'     => '/tmp',
         'path'    => '/bin:/usr/bin',
-        'command' => 'wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.1.3.v20140225/jetty-distribution-${version}.zip',
+        'command' => 'wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.1.3.v20140225/jetty-distribution-9.1.3.v20140225.zip',
         'creates' => '/tmp/jetty-distribution-9.1.3.v20140225.zip',
         'notify'  => 'Exec[\'unzip jetty\']',
         'require' => 'Package[\'wget\']',
@@ -55,7 +55,7 @@ describe 'jetty' do
         'owner'   => 'jetty',
         'group'   => 'jetty',
         'recurse' => 'true',
-        'require' => [User[\'jetty user\'], Exec[\'unzip jetty\']],
+        'require' => '[User[\'jetty user\'], Exec[\'unzip jetty\']]',
       })
     end
 
@@ -64,7 +64,7 @@ describe 'jetty' do
         'path'    => '/opt/jetty',
         'ensure'  => 'link',
         'target'  => '/opt/jetty-distribution-9.1.3.v20140225',
-        'require' => File[\'jetty directory\'],
+        'require' => 'File[\'jetty directory\']',
       })
     end
 
@@ -73,7 +73,7 @@ describe 'jetty' do
         'path'    => '/etc/init.d/jetty',
         'ensure'  => 'link',
         'target'  => '/opt/bin/jetty.sh',
-        'require' => File[\'jetty home\'],
+        'require' => 'File[\'jetty home\']',
       })
     end
 
