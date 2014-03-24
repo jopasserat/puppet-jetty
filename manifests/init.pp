@@ -42,10 +42,21 @@ class jetty(
   $log                    = hiera('jetty::log', '/var/log/jetty'),
   $tmp                    = hiera('jetty::tmp', '/tmp'),
   $java_properties        = hiera('jetty::java_properties', undef),
-  $jetty_properties       = hiera('jetty::jetty_properties', undef),
+  $jetty_properties       = hiera('jetty::jetty_properties', {}),
   $create_work_dir        = hiera('jetty::create_work_dir', false),
   $remove_demo_base       = hiera('jetty::remove_demo_base', true),
 ) {
+
+  $default_jetty_properties = {
+    'JETTY_HOME' => "${home}", 
+    'JETTY_USER' => "${user}", 
+    'JETTY_PORT' => 8080,
+    'JETTY_HOST' => '127.0.0.1',
+    'JETTY_LOGS' => "${log}",
+  }
+
+  validate_hash($jetty_properties)
+  $final_jetty_properties = merge($default_jetty_properties, $jetty_properties)
 
   require java
 
@@ -141,34 +152,31 @@ class jetty(
     }
   }
 
-  if ($java_properties != '' or $jetty_properties != '') {
+  file { 'jetty default':
+    path   => "/etc/default/jetty",
+    ensure => present,
+  }
 
-    file { 'jetty default':
-      path   => "/etc/default/jetty",
-      ensure => present,
+  $final_jetty_properties.each |$key, $value| {
+    file_line { "jetty_properties_${key}":
+      path    => '/etc/default/jetty',
+      line    => "${key}=${value}",
+      match   => "^(${key}=).*$",
+      require => File['jetty default'],
+      notify  => Service['jetty service'],
     }
+  }
+      
+  if(!empty($java_properties)) {
+    validate_hash($java_properties)
 
-    if ($java_properties != '') {
-      $java_properties.each |$key, $value| {
-        file_line { "java_properties_${key}":
-          path    => "/etc/default/jetty",
-          line    => "${key}=${value}",
-          match   => "^(${key}=).*$",
-          require => File['jetty default'],
-          notify  => Service['jetty service'],
-        }
-      }
-    }
-
-    if ($jetty_properties != '') {
-      $jetty_properties.each |$key, $value| {
-        file_line { "jetty_properties_${key}":
-          path    => "/etc/default/jetty",
-          line    => "${key}=${value}",
-          match   => "^(${key}=).*$",
-          require => File['jetty default'],
-          notify  => Service['jetty service'],
-        }
+    $java_properties.each |$key, $value| {
+      file_line { "java_properties_${key}":
+        path    => '/etc/default/jetty',
+        line    => "${key}=${value}",
+        match   => "^(${key}=).*$",
+        require => File['jetty default'],
+        notify  => Service['jetty service'],
       }
     }
   }
