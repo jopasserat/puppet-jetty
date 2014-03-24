@@ -70,30 +70,30 @@ class jetty(
 
   singleton_packages('unzip', 'wget')
 
-  group { 'jetty-group':
+  group { 'jetty group':
     name   => "${group}",
     ensure => present,
   }
 
-  user { 'jetty-user':
+  user { 'jetty user':
     name       => "${user}",
     ensure     => present,
     groups     => "${group}",
     managehome => true,
     shell      => '/bin/bash',
-    require    => Group['jetty-group'],
+    require    => Group['jetty group'],
   }
 
-  exec { 'download-jetty':
+  exec { 'download jetty':
     cwd     => "${tmp}",
     path    => '/bin:/usr/bin',
     command => "wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
     creates => "${tmp}/jetty-distribution-${version}.zip",
-    notify  => Exec['unzip-jetty'],
+    notify  => Exec['unzip jetty'],
     require => Package['wget'],
   }
 
-  exec { 'unzip-jetty':
+  exec { 'unzip jetty':
     cwd     => "${tmp}",
     path    => '/bin:/usr/bin',
     command => "unzip jetty-distribution-${version}.zip -d /opt",
@@ -101,36 +101,36 @@ class jetty(
     require => Package['unzip'],
   }
 
-  file { 'jetty-directory':
+  file { 'jetty directory':
     path    => "/opt/jetty-distribution-${version}",
     ensure  => directory,
     owner   => "${user}",
     group   => "${group}",
     recurse => true,
-    require => [User['jetty-user'], Exec['unzip-jetty']],
+    require => [User['jetty user'], Exec['unzip jetty']],
   }
 
-  file { 'jetty-home':
+  file { 'jetty home':
     path    => "${home}",
     ensure  => 'link',
     target  => "/opt/jetty-distribution-${version}",
-    require => File['jetty-directory'],
+    require => File['jetty directory'],
   }
 
-  file { 'jetty-init':
+  file { 'jetty init':
     path    => '/etc/init.d/jetty',
     ensure  => 'link',
     target  => "${home}/bin/jetty.sh",
-    require => File['jetty-home'],
+    require => File['jetty home'],
   }
 
-  file { 'jetty-log':
+  file { 'jetty log':
     path    => "${log}",
     ensure  => directory,
     owner   => "${user}",
     group   => "${group}",
     recurse => true,
-    require => User['jetty-user'],
+    require => User['jetty user'],
   }
 
   service { 'jetty':
@@ -139,29 +139,29 @@ class jetty(
     ensure     => running,
     hasrestart => true,
     hasstatus  => false,
-    require    => File['jetty-init'],
+    require    => File['jetty init'],
   }
 
   if ($create_work_dir) {
-    file { 'jetty-work':
+    file { 'jetty work':
       path    => "${home}/work",
       ensure  => directory,
       owner   => "${user}",
       group   => "${group}",
-      require => [User['jetty-user'], File['jetty-home']],
+      require => [User['jetty user'], File['jetty home']],
     }
   }
 
   if ($remove_demo_base) {
-    file { 'jetty-demo':
+    file { 'jetty demo':
       path    => "${home}/demo-base",
       ensure  => absent,
       force   => true,
-      require => File['jetty-home'],
+      require => File['jetty home'],
     }
   }
 
-  file { 'jetty-default':
+  file { 'jetty default':
     path   => '/etc/default/jetty',
     ensure => present,
     owner  => 'root',
@@ -173,7 +173,7 @@ class jetty(
       path    => '/etc/default/jetty',
       line    => "${key}=${value}",
       match   => "^(${key}=).*$",
-      require => File['jetty-default'],
+      require => File['jetty default'],
       notify  => Service['jetty'],
     }
   }
@@ -186,7 +186,7 @@ class jetty(
         path    => '/etc/default/jetty',
         line    => "${key}=${value}",
         match   => "^(${key}=).*$",
-        require => File['jetty-default'],
+        require => File['jetty default'],
         notify  => Service['jetty'],
       }
     }
