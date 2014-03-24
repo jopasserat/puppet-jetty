@@ -1,3 +1,7 @@
 # Eclipse
 .settings
 .project
+
+# Rake
+spec/fixtures/manifests
+spec/fixtures/modules

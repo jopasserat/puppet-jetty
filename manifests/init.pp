@@ -49,104 +49,113 @@ class jetty(
 
   require java
 
-  singleton_packages("unzip", "wget")
+  singleton_packages('unzip', 'wget')
 
-  group { "${group}":
-    ensure => "present",
+  group { 'jetty group':
+    name   => "${group}",
+    ensure => present,
   }
 
-  user { "${user}":
-    ensure => "present",
-    groups => $group,
+  user { 'jetty user':
+    name       => "${user}",
+    ensure     => present,
+    groups     => "${group}",
     managehome => true,
-    shell  => '/bin/bash',
-    require => Group["${group}"],
+    shell      => '/bin/bash',
+    require    => Group['jetty group'],
   }
 
-  exec { "download jetty":
-    cwd => "${tmp}",
-    command => "/usr/bin/wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
+  exec { 'download jetty':
+    cwd     => "${tmp}",
+    path    => '/bin:/usr/bin',
+    command => "wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
     creates => "${tmp}/jetty-distribution-${version}.zip",
-    notify => Exec['unzip jetty'],
+    notify  => Exec['unzip jetty'],
     require => Package['wget'],
   }
 
   exec { "unzip jetty":
-    cwd => "${tmp}",
+    cwd     => "${tmp}",
     command => "/usr/bin/unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
     require => Package['unzip'],
   }
 
-  file { "/opt/jetty-distribution-${version}":
-    ensure => directory,
-    owner => $user,
-    group => $group,
+  file { 'jetty directory':
+    path    => "/opt/jetty-distribution-${version}",
+    ensure  => directory,
+    owner   => "${user}",
+    group   => "${group}",
     recurse => true,
-    require => [User["${user}"], Exec['unzip jetty']],
+    require => [User['jetty user'], Exec['unzip jetty']],
   }
 
-  file { "${home}":
-    require => File["/opt/jetty-distribution-${version}"],
-    ensure => 'link',
-    target => "/opt/jetty-distribution-${version}",
+  file { 'jetty home':
+    path    => "${home}",
+    require => File['jetty directory'],
+    ensure  => 'link',
+    target  => "/opt/jetty-distribution-${version}",
   }
 
-  file { "/etc/init.d/jetty":
-    require => File["${home}"],
-    ensure => 'link',
-    target => "${home}/bin/jetty.sh",
+  file { 'jetty init':
+    path    => '/etc/init.d/jetty',
+    require => File['jetty home'],
+    ensure  => 'link',
+    target  => "${home}/bin/jetty.sh",
   }
 
-  file { "${log}":
-    ensure => directory,
-    owner => $user,
-    group => $group,
+  file { 'jetty log':
+    path    => "${log}",
+    ensure  => directory,
+    owner   => "${user}",
+    group   => "${group}",
     recurse => true,
-    require => User["${user}"],
+    require => User['jetty user'],
   }
 
-  service { 'jetty':
-    require => File["/etc/init.d/jetty"],
-    enable => true,
-    ensure => running,
+  service { 'jetty service':
+    name       => 'jetty',
+    enable     => true,
+    ensure     => running,
     hasrestart => true,
-    hasstatus => false,
+    hasstatus  => false,
+    require    => File['jetty init'],
   }
 
   if ($create_work_dir) {
-    file { "${home}/work":
-      path => "${home}/work",
-      ensure => directory,
-      owner => $user,
-      group => $group,
-      require => [User["${user}"], File["${home}"]],
+    file { 'jetty work':
+      path    => "${home}/work",
+      ensure  => directory,
+      owner   => "${user}",
+      group   => "${group}",
+      require => [User['jetty user'], File['jetty home']],
     }
   }
 
   if ($remove_demo_base) {
-    file { "${home}/demo-base":
-      ensure => absent,
-      force => true,
-      require => File["${home}"],
+    file { 'jetty demo':
+      path    => "${home}/demo-base",
+      ensure  => absent,
+      force   => true,
+      require => File['jetty home'],
     }
   }
 
   if ($java_properties != '' or $jetty_properties != '') {
 
-    file { "/etc/default/jetty":
-      path => "/etc/default/jetty",
+    file { 'jetty default':
+      path   => "/etc/default/jetty",
       ensure => present,
     }
 
     if ($java_properties != '') {
       $java_properties.each |$key, $value| {
         file_line { "java_properties_${key}":
-          path => "/etc/default/jetty",
-          line => "${key}=${value}",
-          match => "^(${key}=).*$",
-          require => File["/etc/default/jetty"],
-          notify => Service['jetty'],
+          path    => "/etc/default/jetty",
+          line    => "${key}=${value}",
+          match   => "^(${key}=).*$",
+          require => File['jetty default'],
+          notify  => Service['jetty service'],
         }
       }
     }
@@ -154,11 +163,11 @@ class jetty(
     if ($jetty_properties != '') {
       $jetty_properties.each |$key, $value| {
         file_line { "jetty_properties_${key}":
-          path => "/etc/default/jetty",
-          line => "${key}=${value}",
-          match => "^(${key}=).*$",
-          require => File["/etc/default/jetty"],
-          notify => Service['jetty'],
+          path    => "/etc/default/jetty",
+          line    => "${key}=${value}",
+          match   => "^(${key}=).*$",
+          require => File['jetty default'],
+          notify  => Service['jetty service'],
         }
       }
     }

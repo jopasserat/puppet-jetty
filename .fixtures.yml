@@ -1,0 +1,7 @@
+fixtures:
+  repositories:
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
+    java: https://github.com/puppetlabs/puppetlabs-java.git
+    singleton: https://github.com/pdxcat/puppet-module-singleton.git
+  symlinks:
+    jetty: "#{source_dir}"
