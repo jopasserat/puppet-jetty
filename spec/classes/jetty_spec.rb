@@ -5,6 +5,12 @@ describe 'jetty' do
   let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
 
   it { should contain_class('java') }
+  it { should contain_package('java') }
+
+  it { should contain_class('singleton') }
+  it { should contain_package('singleton_package_unzip') }
+  it { should contain_package('singleton_package_wget') }
+
   #it { should contain_package('unzip') }
   #it { should contain_package('wget') }
 
@@ -44,7 +50,7 @@ describe 'jetty' do
         'cwd'     => '/tmp',
         'path'    => '/bin:/usr/bin',
         'command' => 'unzip jetty-distribution-9.1.3.v20140225.zip -d /opt',
-        'creates' => '/opt/jetty-distribution-9.1.3.v20140225.zip',
+        'creates' => '/opt/jetty-distribution-9.1.3.v20140225',
         'require' => 'Package[unzip]',
       })
     end
@@ -56,7 +62,7 @@ describe 'jetty' do
         'owner'   => 'jetty',
         'group'   => 'jetty',
         'recurse' => 'true',
-        'require' => '[User[jetty user], Exec[unzip jetty]]',
+        'require' => ['User[jetty user]', 'Exec[unzip jetty]'],
       })
     end
 
@@ -73,7 +79,7 @@ describe 'jetty' do
       should contain_file('jetty init').with({
         'path'    => '/etc/init.d/jetty',
         'ensure'  => 'link',
-        'target'  => '/opt/bin/jetty.sh',
+        'target'  => '/opt/jetty/bin/jetty.sh',
         'require' => 'File[jetty home]',
       })
     end
@@ -109,12 +115,43 @@ describe 'jetty' do
       })
     end
 
+    it do
+      should_not contain_file('jetty work')
+    end
+
+    it do
+      should contain_file('jetty demo').with({
+        'path'    => '/opt/jetty/demo-base',
+        'ensure'  => 'absent',
+        'force'   => 'true',
+        'require' => 'File[jetty home]',
+      })
+    end
+
   end
 
-  context "with param" do
-    let(:params) { {:version =>'9.1.3.v20140225', :group => 'jettygroup', :user => 'jettyuser'} }
+  context "with create_work_dir param" do
+    let(:params) { {:create_work_dir => true} }
+
+    it do
+      should contain_file('jetty work').with({
+        'path'    => '/opt/jetty/work',
+        'ensure'  => 'directory',
+        'owner'   => 'jetty',
+        'group'   => 'jetty',
+        'require' => ['User[jetty user]', 'File[jetty home]'],
+      })
+    end
 
   end
 
+  context "with remove_demo_base param" do
+    let(:params) { {:remove_demo_base => false} }
+
+    it do
+      should_not contain_file('jetty demo')
+    end
+
+  end
 end
 at_exit { RSpec::Puppet::Coverage.report! }

@@ -33,11 +33,11 @@ class jetty::deploy (
 ) {
 
   file { "jetty_war_${war}":
-    path   => "${jetty::home}/webapps/${war}",
     ensure => present,
-    owner  => "${jetty::user}",
-    group  => "${jetty::group}",
-    source => "${source}",
+    path   => "${jetty::home}/webapps/${war}",
+    owner  => $jetty::user,
+    group  => $jetty::group,
+    source => $source,
     notify => Service['jetty'],
   }
 }
