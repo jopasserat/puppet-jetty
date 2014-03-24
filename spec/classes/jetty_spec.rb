@@ -19,7 +19,7 @@ describe 'jetty' do
 
     it do
       should contain_user('jetty user').with({
-        'name'   => 'jetty',
+        'name'       => 'jetty',
         'ensure'     => 'present',
         'groups'     => 'jetty',
         'managehome' => 'true',
