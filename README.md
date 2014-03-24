@@ -22,9 +22,9 @@ In your hieradata file
 jetty::version: 9.1.3.v20140225
 ```
 
-It will create `/etc/default/jetty` with these values:
+It will create `/etc/default/jetty` with these default values:
 
-```
+```text
 JETTY_USER=jetty
 JETTY_HOME=/opt/jetty
 JETTY_HOST=127.0.0.1
@@ -89,6 +89,21 @@ class {'jetty::deploy':
   source => /tmp/myapp.war,
   war => app.war,
 }
+```
+
+## Tests
+
+### Unit tests
+
+```bash
+$ rake test
+```
+
+### Smoke tests
+
+```bash
+$ puppet apply tests/init.pp --noop
+$ puppet apply tests/deploy.pp --noop
 ```
 
 ## Authors

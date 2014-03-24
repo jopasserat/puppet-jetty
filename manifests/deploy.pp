@@ -27,7 +27,7 @@
 #
 # Copyright 2014 Gamaliel Sick, unless otherwise noted.
 #
-class jetty::deploy (
+class jetty::deploy(
   $source       = hiera('jetty::deploy::source', undef),
   $war          = hiera('jetty::deploy::war', undef),
 ) {
