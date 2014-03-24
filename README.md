@@ -1,50 +1,79 @@
 puppet-jetty
 ============
 
-Puppet module for installing Jetty
+Puppet module for installing and configuring Jetty
 
 ## Dependencies
 
 This module requires Puppet >= 3.0.0 due to [each](http://docs.puppetlabs.com/references/latest/function.html#each) function, need `parser = future` in `puppet.conf`.<br />
 
-## Usage
-In your hieradata file...
+### Basic usage:
 
-Basic usage:
-```yaml
----
-jetty::version: 9.1.2.v20140210
+In your puppet file
+
+```puppet
+include jetty
 ```
 
-With more options:
+In your hieradata file
+
 ```yaml
 ---
-jetty::version: 9.1.2.v20140210
-jetty::group: jetty
-jetty::user: jetty
-jetty::home: /opt/jetty
-jetty::log: /var/log/jetty
-jetty::create_work_dir: true
-jetty::remove_demo_base: true
+jetty::version: 9.1.3.v20140225
+```
 
+It will create `/etc/default/jetty` with these values:
+
+```
+JETTY_USER=jetty
+JETTY_HOME=/opt/jetty
+JETTY_HOST=127.0.0.1
+JETTY_PORT=8080
+JETTY_LOGS=/var/log/jetty
+```
+
+## Parameters
+
+*`jetty::version`: version of Jetty
+*`jetty::group`: group running Jetty, default `jetty`
+*`jetty::user`: user running Jetty, default `jetty`
+*`jetty::home`: Jetty home directory, default `/opt/jetty`
+*`jetty::log`: Jetty log directory, default `/var/log/jetty`
+*`jetty::create_work_dir`: If `work` directory must be created, default `false`
+*`jetty::remove_demo_base`: If the demo app must be removed, default `true`
+
+Values of `jetty::user`, `jetty::home` and `jetty::log` are automatically add to `/etc/default/jetty`
+
+
+### Override Jetty properties
+
+All JETTY_* properties can be added in your hieradata file
+
+```yaml
+---
+# Merged with default values and added in /etc/default/jetty
+jetty::jetty_properties:
+    JETTY_PORT: 9090
+    JETTY_HOST: 0.0.0.0
+    ...
+```
+
+### Add Java properties
+
+All JAVA* properties can be added in your hieradata file
+
+```yaml
+---
 # Added in /etc/default/jetty
 jetty::java_properties:
     JAVA_HOME: /etc/alternatives/jre
     JAVA: /etc/alternatives/jre/bin/java
     JAVA_OPTIONS: "\"-server -XX:MaxPermSize=256m -Xms256m -Xmx2048m\""
     ...
-
-# Added in /etc/default/jetty
-jetty::jetty_properties:
-    JETTY_HOME: /opt/jetty
-    JETTY_USER: jetty 
-    JETTY_PORT: 8080
-    JETTY_HOST: 0.0.0.0
-    JETTY_LOGS: /var/log/jetty
-    ...
 ```
 
-More usage:
+### Deploy war
+
 ```puppet
 class {'jetty::deploy':
   source => /tmp/myapp.war,
@@ -52,6 +81,9 @@ class {'jetty::deploy':
 }
 ```
 
+## Authors
+
+Gamaliel Sick
 
 ## License
 

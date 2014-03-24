@@ -31,8 +31,16 @@
 # == Sample Usage:
 #
 #   class {'jetty':
-#     version => 9.1.2.v20140210,
+#     version => 9.1.3.v20140225,
 #   }
+#
+# == Authors
+#
+# Gamaliel Sick
+#
+# == Copyright
+#
+# Copyright 2013 Gamaliel Sick, unless otherwise noted.
 #
 class jetty(
   $version                = hiera('jetty::version'),
