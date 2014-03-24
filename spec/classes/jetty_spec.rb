@@ -153,5 +153,16 @@ describe 'jetty' do
     end
 
   end
+
+  context "with jetty properties param" do
+    let(:params) { {:jetty_properties => {'JETTY_PORT' => 9090, 'JETTY_HOST' => '0.0.0.0'}} }
+
+  end
+
+  context "with java properties param" do
+    let(:params) { {:java_properties => {'JAVA_HOME' => '/etc/alternatives/jre'}} }
+
+  end
+
 end
 at_exit { RSpec::Puppet::Coverage.report! }

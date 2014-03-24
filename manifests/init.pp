@@ -56,8 +56,8 @@ class jetty(
 ) {
 
   $default_jetty_properties = {
-    'JETTY_HOME' => $home, 
-    'JETTY_USER' => $user, 
+    'JETTY_HOME' => $home,
+    'JETTY_USER' => $user,
     'JETTY_PORT' => 8080,
     'JETTY_HOST' => '127.0.0.1',
     'JETTY_LOGS' => $log,
@@ -177,7 +177,7 @@ class jetty(
       notify  => Service['jetty'],
     }
   }
-      
+
   if(!empty($java_properties)) {
     validate_hash($java_properties)
 
