@@ -1,6 +1,6 @@
 name         'gsick-jetty'
 version      '0.0.6'
-source       'git://github.com/gsick/puppet-jetty.git'
+source       'https://github.com/gsick/puppet-jetty.git'
 author       'Gamaliel Sick'
 license      'MIT'
 summary      'Jetty configuration module'

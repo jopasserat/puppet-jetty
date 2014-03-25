@@ -7,12 +7,14 @@ Puppet module for installing and configuring Jetty
 
 This module requires Puppet >= 3.4.0 due to [each](http://docs.puppetlabs.com/references/latest/function.html#each) function, need `parser = future` in `puppet.conf`.<br />
 
-### Basic usage:
+### Usage
 
 In your puppet file
 
 ```puppet
-include jetty
+node default {
+  include jetty
+}
 ```
 
 In your hieradata file
@@ -96,7 +98,7 @@ class {'jetty::deploy':
 ### Unit tests
 
 ```bash
-$ bundle
+$ bundle install
 $ rake test
 ```
 
