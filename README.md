@@ -96,6 +96,7 @@ class {'jetty::deploy':
 ### Unit tests
 
 ```bash
+$ bundle
 $ rake test
 ```
 
