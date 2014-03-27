@@ -95,7 +95,7 @@ jetty::java_properties:
 
 ### Deploy war
 
-in your hieradata file
+In your hieradata file
 
 ```yaml
 ---
@@ -103,7 +103,7 @@ jetty::deploy::source: /tmp/myapp.war
 jetty::deploy::war: app.war
 ```
 
-or basic puppet usage
+Or basic puppet usage
 
 ```puppet
 class {'jetty::deploy':
