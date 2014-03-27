@@ -109,7 +109,7 @@ describe 'jetty' do
     it do
       should contain_file('jetty default').with({
         'path'    => '/etc/default/jetty',
-        'ensure'  => 'present',
+        'ensure'  => 'file',
         'owner'   => 'root',
         'group'   => 'root',
       })

@@ -162,7 +162,7 @@ class jetty(
   }
 
   file { 'jetty default':
-    ensure => present,
+    ensure => file,
     path   => '/etc/default/jetty',
     owner  => 'root',
     group  => 'root',

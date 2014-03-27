@@ -3,11 +3,30 @@ puppet-jetty
 
 Puppet module for installing and configuring Jetty
 
+## Table of Contents
+
+* [Status](#status)
+* [Dependencies](#dependencies)
+* [Usage](#usage)
+* [Parameters](#parameters)
+    * [Override Jetty properties](#override%20jetty%20properties)
+    * [Add Java properties](#add%20java%20properties)
+    * [Deploy war](#deploy%20war)
+* [Tests](#tests)
+    * [Unit tests](#unit%20tests)
+    * [Smoke tests](#smoke%20tests)
+* [Authors](#authors)
+* [Licence](#licence)
+
+## Status
+
+0.0.7 released.
+
 ## Dependencies
 
 This module requires Puppet >= 3.4.0 due to [each](http://docs.puppetlabs.com/references/latest/function.html#each) function, need `parser = future` in `puppet.conf`.<br />
 
-### Usage
+## Usage
 
 In your puppet file
 
