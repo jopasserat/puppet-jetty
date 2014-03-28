@@ -31,7 +31,7 @@
 # == Sample Usage:
 #
 #   class {'jetty':
-#     version => 9.1.3.v20140225,
+#     version => '9.1.3.v20140225',
 #   }
 #
 # == Authors
