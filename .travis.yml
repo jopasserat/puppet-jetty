@@ -1,13 +1,13 @@
 language: ruby
 rvm:
   - 1.9.3
-before_script: ./scripts/run-tests.sh
+before_script: ./fix_future_test.sh
 script: "rake test"
 env:
   - PUPPET_VERSION=3.4.3
 branches:
   only:
-    - 0.0.6
+    - 0.0.7
     - master
 notifications:
   email: false
