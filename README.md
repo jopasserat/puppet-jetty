@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/gsick/puppet-jetty.svg?branch=0.0.8)](https://travis-ci.org/gsick/puppet-jetty)
-[![Coverage Status](https://coveralls.io/repos/gsick/puppet-jetty/badge.png?branch=0.0.8)](https://coveralls.io/r/gsick/puppet-jetty?branch=0.0.8)
+[![Build Status](https://travis-ci.org/gsick/puppet-jetty.svg?branch=master)](https://travis-ci.org/gsick/puppet-jetty)
+[![Coverage Status](https://coveralls.io/repos/gsick/puppet-jetty/badge.png?branch=master)](https://coveralls.io/r/gsick/puppet-jetty?branch=master)
 (83% with rspec-puppet)
 
 puppet-jetty
@@ -20,6 +20,7 @@ Puppet module for installing and configuring Jetty
     * [Unit tests](#unit-tests)
     * [Smoke tests](#smoke-tests)
 * [Authors](#authors)
+* [Contributing](#contributing)
 * [Licence](#licence)
 
 ## Status
@@ -138,6 +139,14 @@ $ puppet apply tests/deploy.pp --noop
 ## Authors
 
 Gamaliel Sick
+
+## Contributing
+
+  * Fork it
+  * Create your feature branch (git checkout -b my-new-feature)
+  * Commit your changes (git commit -am 'Add some feature')
+  * Push to the branch (git push origin my-new-feature)
+  * Create new Pull Request
 
 ## License
 
