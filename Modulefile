@@ -1,5 +1,5 @@
 name         'gsick-jetty'
-version      '0.0.7'
+version      '0.0.8'
 source       'https://github.com/gsick/puppet-jetty.git'
 author       'Gamaliel Sick'
 license      'MIT'

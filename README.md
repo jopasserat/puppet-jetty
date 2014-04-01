@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/gsick/puppet-jetty.svg?branch=0.0.7)](https://travis-ci.org/gsick/puppet-jetty)
+[![Coverage Status](https://coveralls.io/repos/gsick/puppet-jetty/badge.png?branch=0.0.7)](https://coveralls.io/r/gsick/puppet-jetty?branch=0.0.7)
+(83% with rspec-puppet)
+
 puppet-jetty
 ============
 
@@ -20,7 +24,7 @@ Puppet module for installing and configuring Jetty
 
 ## Status
 
-0.0.7 released.
+0.0.8 released.
 
 ## Dependencies
 
@@ -116,7 +120,11 @@ class {'jetty::deploy':
 
 ### Unit tests
 
+`$ ./fix_future_test.sh` will be remove after the next release of puppet-lint and rspec-puppet.
+
 ```bash
+$ ./fix_future_test.sh
+$
 $ bundle install
 $ rake test
 ```
