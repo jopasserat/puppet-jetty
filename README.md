@@ -16,6 +16,9 @@ Puppet module for installing and configuring Jetty
     * [Override Jetty properties](#override-jetty-properties)
     * [Add Java properties](#add-java-properties)
     * [Deploy war](#deploy-war)
+* [Installation](#installation)
+    * [puppet](#puppet)
+    * [librarian-puppet](#librarian-puppet)
 * [Tests](#tests)
     * [Unit tests](#unit-tests)
     * [Smoke tests](#smoke-tests)
@@ -115,6 +118,28 @@ class {'jetty::deploy':
   source => /tmp/myapp.war,
   war => app.war,
 }
+```
+
+## Installation
+
+### puppet
+
+```bash
+$ puppet module install gsick/jetty
+```
+
+### librarian-puppet
+
+Add in your Puppetfile
+
+```text
+mod 'gsick/jetty'
+```
+
+and run
+
+```bash
+$ librarian-puppet update
 ```
 
 ## Tests
