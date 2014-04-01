@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'jetty' do
 
   let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
+  let(:parser) { 'future' }
 
   it { should contain_class('java') }
   it { should contain_package('java') }
@@ -10,9 +11,6 @@ describe 'jetty' do
   it { should contain_class('singleton') }
   it { should contain_package('singleton_package_unzip') }
   it { should contain_package('singleton_package_wget') }
-
-  #it { should contain_package('unzip') }
-  #it { should contain_package('wget') }
 
   context "with default param" do
 
@@ -116,6 +114,56 @@ describe 'jetty' do
     end
 
     it do
+      should contain_file_line('jetty_properties_JETTY_HOME').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_HOME=/opt/jetty',
+        'match'   => '^(JETTY_HOME=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
+      should contain_file_line('jetty_properties_JETTY_USER').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_USER=jetty',
+        'match'   => '^(JETTY_USER=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
+      should contain_file_line('jetty_properties_JETTY_PORT').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_PORT=8080',
+        'match'   => '^(JETTY_PORT=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
+      should contain_file_line('jetty_properties_JETTY_HOST').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_HOST=127.0.0.1',
+        'match'   => '^(JETTY_HOST=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
+      should contain_file_line('jetty_properties_JETTY_LOGS').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_LOGS=/var/log/jetty',
+        'match'   => '^(JETTY_LOGS=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
       should_not contain_file('jetty work')
     end
 
@@ -157,12 +205,41 @@ describe 'jetty' do
   context "with jetty properties param" do
     let(:params) { {:jetty_properties => {'JETTY_PORT' => 9090, 'JETTY_HOST' => '0.0.0.0'}} }
 
+    it do
+      should contain_file_line('jetty_properties_JETTY_PORT').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_PORT=9090',
+        'match'   => '^(JETTY_PORT=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
+    it do
+      should contain_file_line('jetty_properties_JETTY_HOST').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JETTY_HOST=0.0.0.1',
+        'match'   => '^(JETTY_HOST=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
   end
 
   context "with java properties param" do
     let(:params) { {:java_properties => {'JAVA_HOME' => '/etc/alternatives/jre'}} }
 
+    it do
+      should contain_file_line('jetty_properties_JAVA_HOME').with({
+        'path'    => '/etc/default/jetty',
+        'line'    => 'JAVA_HOME=/etc/alternatives/jre',
+        'match'   => '^(JAVA_HOME=).*$',
+        'require' => 'File[jetty default]',
+        'notify'  => 'Service[jetty]',
+      })
+    end
+
   end
 
 end
-at_exit { RSpec::Puppet::Coverage.report! }

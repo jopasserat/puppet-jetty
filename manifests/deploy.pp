@@ -30,13 +30,18 @@
 class jetty::deploy(
   $source       = hiera('jetty::deploy::source', undef),
   $war          = hiera('jetty::deploy::war', undef),
+
+  # Add these var for unit test
+  $home         = $jetty::home,
+  $user         = $jetty::user,
+  $group        = $jetty::group,
 ) {
 
   file { "jetty_war_${war}":
-    ensure => present,
-    path   => "${jetty::home}/webapps/${war}",
-    owner  => $jetty::user,
-    group  => $jetty::group,
+    ensure => file,
+    path   => "${home}/webapps/${war}",
+    owner  => $user,
+    group  => $group,
     source => $source,
     notify => Service['jetty'],
   }
