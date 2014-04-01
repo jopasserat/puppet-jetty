@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/gsick/puppet-jetty.svg?branch=0.0.7)](https://travis-ci.org/gsick/puppet-jetty)
-[![Coverage Status](https://coveralls.io/repos/gsick/puppet-jetty/badge.png?branch=0.0.7)](https://coveralls.io/r/gsick/puppet-jetty?branch=0.0.7)
+[![Build Status](https://travis-ci.org/gsick/puppet-jetty.svg?branch=0.0.8)](https://travis-ci.org/gsick/puppet-jetty)
+[![Coverage Status](https://coveralls.io/repos/gsick/puppet-jetty/badge.png?branch=0.0.8)](https://coveralls.io/r/gsick/puppet-jetty?branch=0.0.8)
 (83% with rspec-puppet)
 
 puppet-jetty
@@ -124,7 +124,6 @@ class {'jetty::deploy':
 
 ```bash
 $ ./fix_future_test.sh
-$
 $ bundle install
 $ rake test
 ```
