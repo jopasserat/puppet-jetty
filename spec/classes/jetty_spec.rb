@@ -218,7 +218,7 @@ describe 'jetty' do
     it do
       should contain_file_line('jetty_properties_JETTY_HOST').with({
         'path'    => '/etc/default/jetty',
-        'line'    => 'JETTY_HOST=0.0.0.1',
+        'line'    => 'JETTY_HOST=0.0.0.0',
         'match'   => '^(JETTY_HOST=).*$',
         'require' => 'File[jetty default]',
         'notify'  => 'Service[jetty]',
@@ -231,7 +231,7 @@ describe 'jetty' do
     let(:params) { {:java_properties => {'JAVA_HOME' => '/etc/alternatives/jre'}} }
 
     it do
-      should contain_file_line('jetty_properties_JAVA_HOME').with({
+      should contain_file_line('java_properties_JAVA_HOME').with({
         'path'    => '/etc/default/jetty',
         'line'    => 'JAVA_HOME=/etc/alternatives/jre',
         'match'   => '^(JAVA_HOME=).*$',
