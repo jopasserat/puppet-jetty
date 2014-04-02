@@ -125,7 +125,7 @@ class {'jetty::deploy':
 ### puppet
 
 ```bash
-$ puppet module install gsick/jetty
+$ puppet module install gsick-jetty
 ```
 
 ### librarian-puppet
