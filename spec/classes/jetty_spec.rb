@@ -36,8 +36,8 @@ describe 'jetty' do
       should contain_exec('download jetty').with({
         'cwd'     => '/tmp',
         'path'    => '/bin:/usr/bin',
-        'command' => 'wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.1.3.v20140225/jetty-distribution-9.1.3.v20140225.zip',
-        'creates' => '/tmp/jetty-distribution-9.1.3.v20140225.zip',
+        'command' => 'wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.1.4.v20140401/jetty-distribution-9.1.4.v20140401.zip',
+        'creates' => '/tmp/jetty-distribution-9.1.4.v20140401.zip',
         'notify'  => 'Exec[unzip jetty]',
         'require' => 'Package[wget]',
       })
@@ -47,15 +47,15 @@ describe 'jetty' do
       should contain_exec('unzip jetty').with({
         'cwd'     => '/tmp',
         'path'    => '/bin:/usr/bin',
-        'command' => 'unzip jetty-distribution-9.1.3.v20140225.zip -d /opt',
-        'creates' => '/opt/jetty-distribution-9.1.3.v20140225',
+        'command' => 'unzip jetty-distribution-9.1.4.v20140401.zip -d /opt',
+        'creates' => '/opt/jetty-distribution-9.1.4.v20140401',
         'require' => 'Package[unzip]',
       })
     end
 
     it do
       should contain_file('jetty directory').with({
-        'path'    => '/opt/jetty-distribution-9.1.3.v20140225',
+        'path'    => '/opt/jetty-distribution-9.1.4.v20140401',
         'ensure'  => 'directory',
         'owner'   => 'jetty',
         'group'   => 'jetty',
@@ -68,7 +68,7 @@ describe 'jetty' do
       should contain_file('jetty home').with({
         'path'    => '/opt/jetty',
         'ensure'  => 'link',
-        'target'  => '/opt/jetty-distribution-9.1.3.v20140225',
+        'target'  => '/opt/jetty-distribution-9.1.4.v20140401',
         'require' => 'File[jetty directory]',
       })
     end

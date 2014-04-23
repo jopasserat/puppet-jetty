@@ -48,7 +48,7 @@ In your hieradata file
 
 ```yaml
 ---
-jetty::version: 9.1.3.v20140225
+jetty::version: 9.1.4.v20140401
 ```
 
 It will create `/etc/default/jetty` with these default values:
