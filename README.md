@@ -29,6 +29,7 @@ Puppet module for installing and configuring Jetty
 ## Status
 
 0.0.8 released.
+Tested with puppet 3.5.1
 
 ## Dependencies
 
