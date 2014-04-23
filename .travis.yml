@@ -4,7 +4,7 @@ rvm:
 before_script: ./fix_future_test.sh
 script: "rake test"
 env:
-  - PUPPET_VERSION=3.4.3
+  - PUPPET_VERSION=3.5.1
 branches:
   only:
     - 0.0.8
