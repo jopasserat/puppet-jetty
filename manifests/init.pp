@@ -133,9 +133,12 @@ class jetty(
   }
 
   file { 'jetty init':
-    ensure  => 'link',
+    ensure  => 'file',
     path    => '/etc/init.d/jetty',
-    target  => "${home}/bin/jetty.sh",
+    source  => "puppet:///modules/${module_name}/jetty.sh",
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
     require => File['jetty home'],
   }
 
