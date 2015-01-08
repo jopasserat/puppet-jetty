@@ -440,7 +440,8 @@ case "$ACTION" in
       if running $JETTY_PID
       then
         echo "Already Running $(cat $JETTY_PID)!"
-        exit 1
+        # FIX
+        exit 0
       fi
 
       if [ -n "$JETTY_USER" ] 
