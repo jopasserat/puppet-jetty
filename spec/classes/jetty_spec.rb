@@ -8,10 +8,6 @@ describe 'jetty' do
   it { should contain_class('java') }
   it { should contain_package('java') }
 
-  it { should contain_class('singleton') }
-  it { should contain_package('singleton_package_unzip') }
-  it { should contain_package('singleton_package_wget') }
-
   context "with default param" do
 
     it do
@@ -27,7 +23,8 @@ describe 'jetty' do
         'ensure'     => 'present',
         'groups'     => 'jetty',
         'managehome' => 'true',
-        'shell'      => '/bin/bash',
+        'shell'      => '/sbin/nologin',
+        'system'     => 'true',
         'require'    => 'Group[jetty group]',
       })
     end
@@ -35,7 +32,7 @@ describe 'jetty' do
     it do
       should contain_exec('download jetty').with({
         'cwd'     => '/tmp',
-        'path'    => '/bin:/usr/bin',
+        'path'    => '/sbin:/bin:/usr/bin',
         'command' => 'wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.1.4.v20140401/jetty-distribution-9.1.4.v20140401.zip',
         'creates' => '/tmp/jetty-distribution-9.1.4.v20140401.zip',
         'notify'  => 'Exec[unzip jetty]',
@@ -46,7 +43,7 @@ describe 'jetty' do
     it do
       should contain_exec('unzip jetty').with({
         'cwd'     => '/tmp',
-        'path'    => '/bin:/usr/bin',
+        'path'    => '/sbin:/bin:/usr/bin',
         'command' => 'unzip jetty-distribution-9.1.4.v20140401.zip -d /opt',
         'creates' => '/opt/jetty-distribution-9.1.4.v20140401',
         'require' => 'Package[unzip]',

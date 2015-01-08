@@ -28,8 +28,8 @@
 # Copyright 2014 Gamaliel Sick, unless otherwise noted.
 #
 class jetty::deploy(
-  $source       = hiera('jetty::deploy::source', undef),
-  $war          = hiera('jetty::deploy::war', undef),
+  $source       = undef,
+  $war          = undef,
 
   # Add these var for unit test
   $home         = $jetty::home,
@@ -37,6 +37,9 @@ class jetty::deploy(
   $group        = $jetty::group,
 ) {
 
+  validate_absolute_path($source)
+  validate_string($war)
+ 
   file { "jetty_war_${war}":
     ensure => file,
     path   => "${home}/webapps/${war}",

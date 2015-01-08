@@ -31,7 +31,7 @@
 # == Sample Usage:
 #
 #   class {'jetty':
-#     version => '9.1.4.v20140401',
+#     version => '9.2.6.v20141205',
 #   }
 #
 # == Authors
@@ -43,16 +43,18 @@
 # Copyright 2014 Gamaliel Sick, unless otherwise noted.
 #
 class jetty(
-  $version                = hiera('jetty::version'),
-  $group                  = hiera('jetty::group', 'jetty'),
-  $user                   = hiera('jetty::user', 'jetty'),
-  $home                   = hiera('jetty::home', '/opt/jetty'),
-  $log                    = hiera('jetty::log', '/var/log/jetty'),
-  $tmp                    = hiera('jetty::tmp', '/tmp'),
-  $java_properties        = hiera('jetty::java_properties', undef),
-  $jetty_properties       = hiera('jetty::jetty_properties', {}),
-  $create_work_dir        = hiera('jetty::create_work_dir', false),
-  $remove_demo_base       = hiera('jetty::remove_demo_base', true),
+  $version,
+  $group                  = 'jetty',
+  $user                   = 'jetty',
+  $home                   = '/opt/jetty',
+  $log                    = '/var/log/jetty',
+  $tmp                    = '/tmp',
+  $java_properties        = undef,
+  $jetty_properties       = {},
+  $create_work_dir        = false,
+  $remove_demo_base       = true,
+  $service_ensure         = 'running',
+  $service_enable         = true,
 ) {
 
   $default_jetty_properties = {
@@ -63,12 +65,22 @@ class jetty(
     'JETTY_LOGS' => $log,
   }
 
+  validate_string($version)
+  validate_string($group)
+  validate_string($user)
+  validate_absolute_path($home)
+  validate_absolute_path($log)
+  validate_absolute_path($tmp)
   validate_hash($jetty_properties)
+  validate_bool($create_work_dir)
+  validate_bool($remove_demo_base)
+  validate_string($service_ensure)
+  validate_bool($service_enable)
   $final_jetty_properties = merge($default_jetty_properties, $jetty_properties)
 
   require java
 
-  singleton_packages('unzip', 'wget')
+  ensure_packages(['unzip', 'wget'])
 
   group { 'jetty group':
     ensure => present,
@@ -79,14 +91,14 @@ class jetty(
     ensure     => present,
     name       => $user,
     groups     => $group,
-    managehome => true,
-    shell      => '/bin/bash',
+    shell      => '/sbin/nologin',
+    system     => true,
     require    => Group['jetty group'],
   }
 
   exec { 'download jetty':
     cwd     => $tmp,
-    path    => '/bin:/usr/bin',
+    path    => '/sbin:/bin:/usr/bin',
     command => "wget http://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version}/jetty-distribution-${version}.zip",
     creates => "${tmp}/jetty-distribution-${version}.zip",
     notify  => Exec['unzip jetty'],
@@ -95,7 +107,7 @@ class jetty(
 
   exec { 'unzip jetty':
     cwd     => $tmp,
-    path    => '/bin:/usr/bin',
+    path    => '/sbin:/bin:/usr/bin',
     command => "unzip jetty-distribution-${version}.zip -d /opt",
     creates => "/opt/jetty-distribution-${version}",
     require => Package['unzip'],
@@ -134,9 +146,9 @@ class jetty(
   }
 
   service { 'jetty':
-    ensure     => running,
+    ensure     => $service_ensure,
     name       => 'jetty',
-    enable     => true,
+    enable     => $service_enable,
     hasrestart => true,
     hasstatus  => false,
     require    => File['jetty init'],
