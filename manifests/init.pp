@@ -153,7 +153,7 @@ class jetty(
     name       => 'jetty',
     enable     => $service_enable,
     hasrestart => true,
-    hasstatus  => false,
+    hasstatus  => true,
     require    => File['jetty init'],
   }
 
