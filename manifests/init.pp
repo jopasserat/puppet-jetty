@@ -91,8 +91,11 @@ class jetty(
     ensure     => present,
     name       => $user,
     groups     => $group,
-    shell      => '/sbin/nologin',
+    shell      => '/bin/bash',
+    home       => "/home/${user}",
+    managehome => true,
     system     => true,
+    comment    => 'jetty server',
     require    => Group['jetty group'],
   }
 
