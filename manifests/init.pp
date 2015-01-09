@@ -46,6 +46,8 @@ class jetty(
   $version,
   $group                  = 'jetty',
   $user                   = 'jetty',
+  $user_uid               = undef,
+  $group_gid              = undef,
   $home                   = '/opt/jetty',
   $log                    = '/var/log/jetty',
   $tmp                    = '/tmp',
@@ -82,21 +84,46 @@ class jetty(
 
   ensure_packages(['unzip', 'wget'])
 
-  group { 'jetty group':
-    ensure => present,
-    name   => $group,
+  if($group_gid) {
+    group { 'jetty group':
+      ensure => present,
+      name   => $group,
+      system => true,
+      gid    => $group_gid,
+    }
+  } else {
+    group { 'jetty group':
+      ensure => present,
+      name   => $group,
+      system => true,
+    }
   }
 
-  user { 'jetty user':
-    ensure     => present,
-    name       => $user,
-    groups     => $group,
-    shell      => '/bin/bash',
-    home       => "/home/${user}",
-    managehome => true,
-    system     => true,
-    comment    => 'jetty server',
-    require    => Group['jetty group'],
+  if($user_uid) {
+    user { 'jetty user':
+      ensure     => present,
+      name       => $user,
+      groups     => $group,
+      shell      => '/bin/bash',
+      home       => "/home/${user}",
+      managehome => true,
+      system     => true,
+      uid        => $user_uid,
+      comment    => 'jetty server',
+      require    => Group['jetty group'],
+    }
+  } else {
+    user { 'jetty user':
+      ensure     => present,
+      name       => $user,
+      groups     => $group,
+      shell      => '/bin/bash',
+      home       => "/home/${user}",
+      managehome => true,
+      system     => true,
+      comment    => 'jetty server',
+      require    => Group['jetty group'],
+    }
   }
 
   exec { 'download jetty':
